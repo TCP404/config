@@ -1,0 +1,557 @@
+[config]
+monitor = ${env:MONITOR:HDMI-1}
+
+
+[colors]
+
+;background = ${xrdb:color0:#222}
+background     = #cc222222
+background-alt = #444
+foreground     = #dfdfdf
+foreground-alt = #555
+
+primary   = #ffb52a
+secondary = #e60053
+alert     = #bd2c40
+
+red    = #FF5555
+orange = #FBA922
+yellow = #FFFF55
+green  = #AAFF77
+cyan   = #50E3C2
+blue   = #4A90E2
+purple = #4A90E2
+pink   = #F50A4D
+white  = #FFF
+black  = #000
+
+
+[bar/example]
+width        = 100%
+height       = 30
+;offset-x    = 1%
+;offset-y    = 1%
+radius       = 0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-top-size = 0
+border-left-size = 0
+border-right-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = "ttf-liberation-sans:fixed:pixelsize=12;1"
+font-1 = "source han sans cn:pixelsize=14:antialias=false;1"
+font-2 = "Font Awesome 6 Free:style=Solid:pixelsize=12;1"
+font-3 = "Font Awesome 6 Brands:style=Regular:pixelsize=12;1"
+font-4 = "vimix icons:pixelsize=16;3"
+font-5 = "Cascadia Code:style=Bold:pixelsize=13;1"
+
+; Arrow: xkeyboard filesystem xbacklight volume  memory cpu  wlan eth networkspeedup battery temperature date
+modules-left   = i3 xwindow 
+; modules-center = mpd
+modules-right  = networkspeedup memory cpu temperature backlight-acpi battery date
+
+tray-position   = right
+tray-padding    = 2
+tray-background = ${colors.background}
+
+cursor-click  = pointer
+cursor-scroll = ns-resize
+
+
+;;;-------------------- settings ----------------------;;;
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+
+
+;=====|module|=============================== 窗口 ===========================================;
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:45:45:...%
+label-font = 5
+
+
+;=====|module|=============================== 键盘 ===========================================;
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-underline = ${colors.secondary}
+
+label-layout = %layout%
+label-layout-underline = ${colors.secondary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+label-indicator-underline = ${colors.secondary}
+
+
+
+;=====|module|=============================== 硬盘容量 ===========================================;
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline  = ${colors.primary}
+label-focused-padding    = 2
+
+label-occupied = %index%
+label-occupied-padding = 2
+
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+label-empty = %index%
+label-empty-foreground = ${colors.foreground-alt}
+label-empty-padding = 2
+
+
+
+;=====|module|=============================== 窗口标签 ===========================================;
+
+[module/i3]
+type            = internal/i3
+format          = <label-state> <label-mode>
+index-sort      = true
+wrapping-scroll = false
+
+label-mode-padding       = 2
+label-mode-foreground    = #000
+label-mode-background    = ${colors.primary}
+
+label-focused-background = ${colors.blue}
+label-focused-underline  = ${colors.pink}
+label-focused-padding    = ${module/bspwm.label-focused-padding}
+
+label-unfocused-padding  = ${module/bspwm.label-occupied-padding}
+
+label-visible-background = ${colors.background}
+label-visible-underline  = ${colors.orange}
+label-visible-padding    = ${self.label-focused-padding}
+
+label-urgent-background  = ${module/bspwm.label-urgent-background}
+label-urgent-padding     = ${module/bspwm.label-urgent-padding} |
+
+
+
+;=====|module|=============================== 音乐播放器 ===========================================;
+
+[module/mpd]
+type = internal/mpd
+format-online =  <icon-prev>  <icon-stop>  <toggle>  <icon-next>  <icon-repeat>  <label-song>
+
+;label-offline = mpd is offline
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+icon-repeat = 
+icon-repeatone = 
+icon-random = 
+
+toggle-on-foreground = #ff
+toggle-off-foreground = #55
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+
+
+;=====|module|=============================== 亮度 ===========================================;
+
+[module/xbacklight]
+type          = internal/xbacklight
+card          = intel_backlight
+monitor       = eDP-1
+enable-scroll = true
+; output = eDP-1
+
+format           = <label>
+label            = BL %percentage%
+label-font       = 5
+format-underline = ${colors.blue}
+
+ramp-0 = 🌕
+ramp-1 = 🌔
+ramp-2 = 🌓
+ramp-3 = 🌒
+ramp-4 = 🌑
+
+
+
+[module/backlight-acpi]
+inherit       = module/xbacklight
+type          = internal/backlight
+card          = intel_backlight
+enable-scroll = true
+
+
+;=====|module|=============================== CPU ===========================================;
+
+[module/cpu]
+type = internal/cpu
+
+; Seconds to sleep between updates; Default: 1
+interval = 3.0
+
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+format = <label><ramp-load>
+
+; Available tokens:
+;   %percentage% (default) - total cpu load averaged over all cores
+;   %percentage-sum% - Cumulative load on all cores
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+; label            = " %percentage:3%"
+label            = " "
+label-font       = 4
+label-foreground = #38ffe2
+
+; Spacing between individual per-core ramps
+ramp-coreload-spacing = 1
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = █
+
+; ramps for ramp-load
+ramp-load-0 = ▁
+ramp-load-1 = ▂
+ramp-load-2 = ▃
+ramp-load-3 = ▄
+ramp-load-4 = ▅
+ramp-load-5 = ▆
+ramp-load-6 = ▇
+ramp-load-7 = █
+
+; colors for each ramp
+ramp-load-0-foreground = #38b9ff
+ramp-load-1-foreground = #38b9ff
+ramp-load-2-foreground = #aaff77
+ramp-load-3-foreground = #aaff77
+ramp-load-4-foreground = #fba922
+ramp-load-5-foreground = #fba922
+ramp-load-6-foreground = #ff5555
+ramp-load-7-foreground = #ff0000
+
+
+;=====|module|=============================== 内存 ===========================================;
+
+[module/memory]
+type = internal/memory
+
+; Seconds to sleep between updates; Default: 1
+interval = 3.0
+
+; Available tags:
+;   <label> (default)
+;   <bar-used>
+;   <bar-free>
+;   <ramp-used>
+;   <ramp-free>
+;   <bar-swap-used>
+;   <bar-swap-free>
+;   <ramp-swap-used>
+;   <ramp-swap-free>
+format = <label><ramp-used>
+
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+;   %percentage_swap_used%
+;   %percentage_swap_free%
+;   %mb_swap_total%
+;   %mb_swap_free%
+;   %mb_swap_used%
+;   %gb_swap_total%
+;   %gb_swap_free%
+;   %gb_swap_used%
+label = " "
+label-font = 4
+label-foreground = #e238ff
+
+; Only applies if <bar-used> is used
+bar-used-indicator =
+bar-used-width = 50
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill  = ▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
+
+; Only applies if <ramp-used> is used
+ramp-used-0 = ▁
+ramp-used-1 = ▂
+ramp-used-2 = ▃
+ramp-used-3 = ▄
+ramp-used-4 = ▅
+ramp-used-5 = ▆
+ramp-used-6 = ▇
+ramp-used-7 = █
+ramp-used-0-foreground = #38b9ff
+ramp-used-1-foreground = #38b9ff
+ramp-used-2-foreground = #aaff77
+ramp-used-3-foreground = #aaff77
+ramp-used-4-foreground = #fba922
+ramp-used-5-foreground = #fba922
+ramp-used-6-foreground = #ff5555
+ramp-used-7-foreground = #ff0000
+
+; Only applies if <ramp-free> is used
+ramp-free-0 = ▁
+ramp-free-1 = ▂
+ramp-free-2 = ▃
+ramp-free-3 = ▄
+ramp-free-4 = ▅
+ramp-free-5 = ▆
+ramp-free-6 = ▇
+ramp-free-7 = █
+
+
+
+;=====|module|=============================== CPU温度 ===========================================;
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+label-font            = 5
+label                 = %temperature-c%
+format                = <ramp> <label>
+format-underline      = ${colors.yellow}
+
+label-warn            = %temperature-c%
+label-warn-foreground = ${colors.red}
+format-warn           = <ramp> <label-warn>
+format-warn-underline = ${color.red}
+
+ramp-0 =
+ramp-1 =
+ramp-2 =
+ramp-foreground = ${colors.foreground-alt}
+
+
+
+;=====|module|=============================== WIFI ===========================================;
+
+[module/wlan]
+type = internal/network
+interface = wlp2s0
+interval = 3.0
+
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.green}
+format-connected = <label-connected>
+format-connected-underline = ${colors.green}
+
+format-disconnected-prefix = " "
+format-disconnected-prxfix-foreground = ${colors.red}
+format-disconnected = <label-disconnected>
+format-disconnected-underline = ${colors.red}
+
+label-connected = %essid:0:5:...%
+label-connected-foreground = ${colors.white}
+
+
+label-disconnected = "off"
+label-disconnected-foreground = ${colors.red}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground-alt}
+
+
+
+;=====|module|=============================== 有线连接 ===========================================;
+
+[module/eth]
+type = internal/network
+interface = eno1
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = "📶"
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+
+
+;=====|module|=============================== 网速 ===========================================;
+
+[module/networkspeedup]
+type = internal/network
+interface = wlp2s0
+
+;label-connected = " %upspeed:7%  %downspeed:7%"
+label-connected         = " %downspeed:7%"
+label-connected-font    = 4
+format-connected        = <label-connected>
+format-connected-prefix = ""
+;format-connected-prefix-foreground = #5b
+
+
+
+;=====|module|=============================== 日期 ===========================================;
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = " %Y-%m-%d "
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #0a6cf5
+
+label = %date% %time%
+label-font = 4
+
+
+
+;=====|module|=============================== 音量 ===========================================;
+
+[module/volume]
+type = internal/volume
+enable-scroll = true
+
+master-soundcard = default
+speaker-soundcard = default
+headphone-soundcard = default
+
+format-volume = <label-volume>
+label-volume  = "|  %percentage%% |"
+label-volume-foreground = ${colors.foreground}
+
+format-muted-foreground = ${colors.red}
+label-muted = "|  |"
+
+bar-volume-width = 5
+bar-volume-foreground-0 = #5af78e
+bar-volume-foreground-1 = #5af78e
+bar-volume-foreground-2 = #5af78e
+bar-volume-foreground-3 = #5af78e
+bar-volume-foreground-4 = #5af78e
+bar-volume-foreground-5 = #f3f99d
+bar-volume-foreground-6 = #ff5c57
+
+bar-volume-gradient = false
+bar-volume-indicator            = │
+bar-volume-indicator-font       = 2
+bar-volume-indicator-foreground = #fFf
+bar-volume-fill = 
+bar-volume-fill-font = 2
+bar-volume-empty = 
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+
+
+;=====|module|=============================== 电池 ===========================================;
+
+[module/battery]
+type    = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 99
+
+format-charging              = <animation-charging> <label-charging>
+format-charging-underline    = ${colors.green}
+format-discharging           = <ramp-capacity> <label-discharging>
+format-discharging-underline = ${colors.white}
+
+label-discharging-font = 4
+label-charging-font    = 4
+label-full-font        = 4
+label-full             = ""
+label-full-foreground  = ${colors.blue}
+format-full            = <label-full>
+format-full-underline  = ${colors.blue}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-0-foreground = ${colors.red}
+ramp-capacity-1-foreground = ${colors.orange}
+ramp-capacity-2-foreground = ${colors.green}
+ramp-capacity-3-foreground = ${colors.blue}
+
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-0-foreground = ${colors.red}
+animation-charging-1-foreground = ${colors.orange}
+animation-charging-2-foreground = ${colors.yellow}
+animation-charging-3-foreground = ${colors.green}
+
+animation-charging-framerate = 750
