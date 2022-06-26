@@ -1,0 +1,1 @@
+/home/boii/.config/nvim/init.vim
